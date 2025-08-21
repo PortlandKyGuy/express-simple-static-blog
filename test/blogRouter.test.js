@@ -4,14 +4,6 @@ const path = require('path');
 const expressStaticBlog = require('../index');
 const createBlogRouter = require('../lib/blogRouter');
 
-// Mock ejs views
-const mockRender = (req, res) => {
-    res.json({
-        view: req.route.path,
-        data: res.locals
-    });
-};
-
 describe('blogRouter', () => {
     let app;
     let blog;
@@ -369,6 +361,7 @@ describe('blogRouter', () => {
             // Create app with custom error handler
             const errorApp = express();
             errorApp.use('/blogs', blog.router());
+            // eslint-disable-next-line no-unused-vars
             errorApp.use((err, req, res, next) => {
                 res.status(err.status || 500).json({ error: err.message });
             });
