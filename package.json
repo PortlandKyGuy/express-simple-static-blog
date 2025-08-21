@@ -48,8 +48,8 @@
     "example": "examples"
   },
   "peerDependencies": {
-    "express": "^4.0.0",
-    "ejs": "^3.0.0"
+    "express": ">4.0.0",
+    "ejs": ">3.0.0"
   },
   "devDependencies": {
     "jest": "^29.0.0",
