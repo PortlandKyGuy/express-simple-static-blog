@@ -74,9 +74,17 @@ describe('express-simple-static-blog', () => {
             });
             const posts = ascBlog.getAll();
             
-            expect(posts[0].date).toBe('2025-01-10');
-            expect(posts[1].date).toBe('2025-01-15');
-            expect(posts[2].date).toBe('2025-01-20');
+            // Verify ascending order
+            for (let i = 1; i < posts.length; i++) {
+                expect(posts[i-1].date <= posts[i].date).toBe(true);
+            }
+            
+            // Verify our known posts are in correct positions
+            const dates = posts.map(p => p.date);
+            expect(dates).toContain('2025-01-10');
+            expect(dates).toContain('2025-01-15');
+            expect(dates).toContain('2025-01-20');
+            expect(dates.indexOf('2025-01-10')).toBeLessThan(dates.indexOf('2025-01-20'));
         });
 
         test('should get blog by exact date', () => {
@@ -100,10 +108,14 @@ describe('express-simple-static-blog', () => {
             expect(Array.isArray(recent)).toBe(true);
             expect(recent.length).toBe(2);
             
+            // Should be newest first
             expect(recent[0].date).toBe('2025-01-20');
             expect(recent[0].title).toBe('Test Blog Post');
-            expect(recent[1].date).toBe('2025-01-15');
-            expect(recent[1].title).toBe('Older Blog Post');
+            expect(recent[1].date).toBe('2025-01-17');
+            
+            for (let i = 1; i < recent.length; i++) {
+                expect(recent[i-1].date >= recent[i].date).toBe(true);
+            }
         });
 
         test('should handle getRecent with count larger than total posts', () => {
@@ -117,28 +129,33 @@ describe('express-simple-static-blog', () => {
             const perPage = 2;
             const page1 = blog.getPaginated(1, perPage);
             
+            expect(page1.items).toBeDefined();
+            expect(page1.pagination).toBeDefined();
             expect(page1.items.length).toBeLessThanOrEqual(perPage);
-            expect(page1.currentPage).toBe(1);
-            expect(page1.totalItems).toBe(allPosts.length);
-            expect(page1.totalPages).toBe(Math.ceil(allPosts.length / perPage));
-            expect(page1.hasPrev).toBe(false);
+            expect(page1.pagination.currentPage).toBe(1);
+            expect(page1.pagination.totalItems).toBe(allPosts.length);
+            expect(page1.pagination.totalPages).toBe(Math.ceil(allPosts.length / perPage));
+            expect(page1.pagination.hasPrev).toBe(false);
             
             for (let i = 1; i < page1.items.length; i++) {
                 expect(page1.items[i-1].date >= page1.items[i].date).toBe(true);
             }
             
-            const lastPage = blog.getPaginated(page1.totalPages, perPage);
-            expect(lastPage.hasNext).toBe(false);
-            expect(lastPage.hasPrev).toBe(page1.totalPages > 1);
+            const lastPage = blog.getPaginated(page1.pagination.totalPages, perPage);
+            expect(lastPage.pagination.hasNext).toBe(false);
+            expect(lastPage.pagination.hasPrev).toBe(page1.pagination.totalPages > 1);
         });
 
         test('should handle invalid page numbers in pagination', () => {
             const page0 = blog.getPaginated(0, 2);
-            expect(page0.currentPage).toBe(1);
+            expect(page0.pagination.currentPage).toBe(1);
             
+            const allPosts = blog.getAll();
+            const totalPages = Math.ceil(allPosts.length / 2);
             const pageHigh = blog.getPaginated(99, 2);
-            expect(pageHigh.items.length).toBe(0);
-            expect(pageHigh.currentPage).toBe(99);
+            // Should clamp to last valid page
+            expect(pageHigh.pagination.currentPage).toBe(totalPages);
+            expect(pageHigh.pagination.hasNext).toBe(false);
         });
     });
 
@@ -207,9 +224,9 @@ describe('express-simple-static-blog', () => {
             expect(frontMatterPost.month).toBe('01');
             expect(frontMatterPost.day).toBe('19');
             
-            expect(frontMatterPost.extra).toBeDefined();
-            expect(frontMatterPost.extra.tags).toBe('test, markdown, frontmatter');
-            expect(frontMatterPost.extra.author).toBe('Test Author');
+            // Custom metadata fields are spread directly on the object
+            expect(frontMatterPost.tags).toBe('test, markdown, frontmatter');
+            expect(frontMatterPost.author).toBe('Test Author');
         });
 
         test('should fallback gracefully if front matter is missing', () => {

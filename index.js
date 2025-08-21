@@ -2,7 +2,6 @@ const BlogCache = require('./lib/blogCache');
 const BlogParser = require('./lib/blogParser');
 const createBlogRouter = require('./lib/blogRouter');
 const path = require('path');
-const fs = require('fs');
 
 /**
  * Express Simple Static Blog
