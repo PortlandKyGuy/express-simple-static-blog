@@ -1,0 +1,17 @@
+<% layout = 'layout' -%>
+<% body = `
+<h1>Welcome to My Blog</h1>
+<p>This is an example blog built with express-simple-static-blog.</p>
+
+<h2>Recent Posts</h2>
+${recentPosts.length > 0 ? recentPosts.map(post => `
+    <article>
+        <h3><a href="/blog/${post.year}-${post.month}-${post.day}">${post.title}</a></h3>
+        <p class="meta">Posted on ${post.date}</p>
+        <p>${post.desc}</p>
+    </article>
+`).join('') : '<p>No blog posts yet.</p>'}
+
+<p><a href="/blog">View all posts →</a></p>
+` -%>
+<%- include(layout, { body: body }) %>

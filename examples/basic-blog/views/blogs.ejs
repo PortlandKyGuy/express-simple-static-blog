@@ -1,0 +1,26 @@
+<% layout = 'layout' -%>
+<% body = `
+<h1>Blog Posts</h1>
+
+${search ? `<p>Search results for: <strong>${search}</strong></p>` : ''}
+
+${blogs && blogs.length > 0 ? blogs.map(blog => `
+    <article>
+        <h2><a href="/blog/${blog.year}-${blog.month}-${blog.day}">${blog.title}</a></h2>
+        <p class="meta">Posted on ${blog.date}</p>
+        <p>${blog.desc}</p>
+        <a href="/blog/${blog.year}-${blog.month}-${blog.day}">Read more →</a>
+    </article>
+`).join('') : '<p>No blog posts found.</p>'}
+
+${pagination && pagination.totalPages > 1 ? `
+    <div class="pagination">
+        ${pagination.hasPrev ? `<a href="?page=${pagination.currentPage - 1}">← Previous</a>` : ''}
+        ${Array.from({length: pagination.totalPages}, (_, i) => i + 1).map(page => 
+            `<a href="?page=${page}" class="${page === pagination.currentPage ? 'active' : ''}">${page}</a>`
+        ).join('')}
+        ${pagination.hasNext ? `<a href="?page=${pagination.currentPage + 1}">Next →</a>` : ''}
+    </div>
+` : ''}
+` -%>
+<%- include(layout, { body: body, title: 'Blog' }) %>

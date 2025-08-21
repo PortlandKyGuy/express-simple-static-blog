@@ -1,0 +1,22 @@
+<% layout = 'layout' -%>
+<% body = `
+<h1>About</h1>
+<p>This is an example blog demonstrating the express-simple-static-blog package.</p>
+
+<h2>Features</h2>
+<ul>
+    <li>File-based blog posts (HTML files)</li>
+    <li>In-memory caching for fast performance</li>
+    <li>Clean separation - you own the templates</li>
+    <li>Date-based URL routing</li>
+    <li>Built-in search functionality</li>
+    <li>Pagination support</li>
+    <li>RSS feed generation</li>
+    <li>JSON API endpoints</li>
+    <li>Zero database dependency</li>
+</ul>
+
+<h2>How to Use</h2>
+<p>Simply add HTML files to the <code>views/blogs</code> directory with the proper metadata format, and they'll automatically appear in the blog.</p>
+` -%>
+<%- include(layout, { body: body }) %>

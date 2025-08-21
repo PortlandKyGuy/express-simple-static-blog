@@ -1,0 +1,8 @@
+<% layout = 'layout' -%>
+<% body = `
+<h1>Server Error</h1>
+<p>Sorry, something went wrong on our end.</p>
+${error && error.stack ? `<pre>${error.stack}</pre>` : ''}
+<p><a href="/">Go back home</a></p>
+` -%>
+<%- include(layout, { body: body }) %>

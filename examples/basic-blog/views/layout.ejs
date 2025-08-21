@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - My Blog</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        nav {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        nav a {
+            margin-right: 1rem;
+            text-decoration: none;
+            color: #0066cc;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        article {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .meta {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .pagination {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .pagination a {
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            background: #f4f4f4;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+        .pagination .active {
+            background: #0066cc;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/blog">Blog</a>
+        <a href="/about">About</a>
+        <a href="/blog/feed.rss">RSS Feed</a>
+    </nav>
+    <main>
+        <%- body %>
+    </main>
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Blog. Built with express-simple-static-blog.</p>
+    </footer>
+</body>
+</html>

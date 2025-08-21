@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Getting Started with express-simple-static-blog</title>
+    <!-- [date: 2025-01-19] -->
+    <!-- [desc: Learn how to set up your own blog using express-simple-static-blog in minutes.] -->
+</head>
+<body>
+    <h1>Getting Started with express-simple-static-blog</h1>
+    
+    <p>Setting up a blog with express-simple-static-blog is incredibly easy. Here's how:</p>
+    
+    <h2>Installation</h2>
+    <pre><code>npm install express-simple-static-blog</code></pre>
+    
+    <h2>Basic Setup</h2>
+    <pre><code>const express = require('express');
+const expressStaticBlog = require('express-simple-static-blog');
+
+const app = express();
+
+// Set up view engine
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
+// Initialize blog
+const blog = expressStaticBlog({
+    blogsDir: './views/blogs',
+    routePrefix: '/blog'
+});
+
+// Mount blog router
+app.use(blog.router());
+
+app.listen(3000);</code></pre>
+    
+    <h2>Creating Blog Posts</h2>
+    <p>Just create HTML files in your blogs directory with the proper metadata format:</p>
+    
+    <pre><code>&lt;!-- [date: 2025-01-19] --&gt;
+&lt;!-- [desc: Your post description] --&gt;</code></pre>
+    
+    <p>That's it! Your blog is ready to go.</p>
+</body>
+</html>
